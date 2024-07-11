@@ -10,7 +10,7 @@ import Login from "./components/LoginForm";
 import SignUp from "./components/SignUp";
 import { SharedStateProvider } from "./SharedContext.js";
 import { AuthProvider } from "./utils/AuthContext.js";
-import UserProfile from "./components/UserPofile.js";
+import UserProfile from "./components/UserPofile.jsx";
 import MovieDetails from "./components/MovieDetails";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

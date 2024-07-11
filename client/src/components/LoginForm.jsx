@@ -62,16 +62,16 @@ const Login = () => {
               required
             />
           </div>
-          <div className="text-sm mb-4">
+          {/* <div className="text-sm mb-4">
             <span>
               <a className=" font-thin">No account? </a>
               <a href="/signup" className=" text-blue-600">
                 Sign Up
               </a>
             </span>
-          </div>
+          </div> */}
 
-          {error && <div className="text-red-500">{error}</div>}
+          {error && <div className=" text-[0.8rem] text-red-500 text-center my-4">{error}</div>}
           <div>
             <button
               type="submit"

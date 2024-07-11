@@ -36,7 +36,7 @@ function Header() {
         </div>
         <div className="flex items-center md:gap-10 gap-4">
           <a href="/profile" className="md:text-1xl text-1xl text-slate-200">
-            My Profile
+            My 3D Models
           </a>
           {tokens ? (
             <>
