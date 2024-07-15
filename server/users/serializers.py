@@ -1,11 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
-from rest_framework import serializers
-from django.contrib.auth import get_user_model
-
+from .models import UserModel
 
 User = get_user_model()
 
@@ -34,3 +29,15 @@ class UserSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+
+class UserModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ['id', 'user', 'name', 'file', 'uploaded_at']
+        read_only_fields = ['user', 'uploaded_at']
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        return UserModel.objects.create(user=user, **validated_data)

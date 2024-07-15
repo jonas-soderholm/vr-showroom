@@ -16,7 +16,7 @@ function MovieMain() {
       <div className="text-2xl text-center pt-[2rem] text-slate-200">Search for any movie or series</div>
       <div className="text-2xl text-center pb-[1rem] text-slate-200">and save them to your profile</div>
       <div className="text-2xl text-center pb-[1rem] text-slate-200">and save them to your profile</div>
-      <button class="btn btn-blue">Button</button>
+      <button class="btn btn-blue ">Button</button>
     </>
   );
 }

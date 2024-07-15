@@ -8,10 +8,13 @@ export const useSharedState = () => {
 
 export const SharedStateProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [uploadFinished, setUploadFinished] = useState(false); // Default to false
 
   return (
     <MarkerStateContext.Provider
       value={{
+        uploadFinished,
+        setUploadFinished,
         cartItems,
         setCartItems,
       }}
