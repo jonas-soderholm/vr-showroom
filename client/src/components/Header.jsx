@@ -31,7 +31,7 @@ function Header() {
       <div className="p-3 flex justify-between mx-1">
         <div className="flex items-center">
           <a href="/" className="md:text-2xl text-1xl text-slate-200">
-            VR Showroom
+            FastXR
           </a>
         </div>
         <div className="flex items-center md:gap-10 gap-4">
