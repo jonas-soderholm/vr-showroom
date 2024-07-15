@@ -10,6 +10,10 @@ import os
 
 User = get_user_model()
 
+MAX_UPLOADS = 6
+MAX_FILE_SIZE_MB = 10
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def create_user(request):
@@ -33,14 +37,43 @@ def user_detail(request):
 
 
 
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def upload_model(request):
+#     serializer = UserModelSerializer(data=request.data, context={'request': request})
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def upload_model(request):
+    user = request.user
+
+    # Check the number of models
+    if UserModel.objects.filter(user=user).count() >= MAX_UPLOADS:
+        return Response({'error': f'You can only upload a maximum of {MAX_UPLOADS} models.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    file = request.FILES.get('file')
+    if not file:
+        return Response({'error': 'No file provided.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check file size
+    if file.size > MAX_FILE_SIZE_MB * 1024 * 1024:
+        return Response({'error': f'File size should not exceed {MAX_FILE_SIZE_MB}MB.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check file type
+    if not file.name.lower().endswith('.fbx'):
+        return Response({'error': 'Only .fbx files are allowed.'}, status=status.HTTP_400_BAD_REQUEST)
+
     serializer = UserModelSerializer(data=request.data, context={'request': request})
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

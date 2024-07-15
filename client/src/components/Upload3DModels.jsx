@@ -1,19 +1,61 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { useSharedState } from "../SharedContext";
+
+const MAX_UPLOADS = 6;
+const MAX_FILE_SIZE_MB = 10;
+const ALLOWED_FILE_TYPE = "fbx";
 
 const UploadModels = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState("");
   const { setUploadFinished } = useSharedState();
-  const fileInputRef = useRef(null); // Add a ref to the file input
+  const fileInputRef = useRef(null);
+  const [modelCount, setModelCount] = useState(0); // Track the number of uploaded models
+
+  // Fetch current user's model count
+  useEffect(() => {
+    const fetchModelCount = async () => {
+      try {
+        const response = await axiosInstance.get("users/list-models/");
+        setModelCount(response.data.length);
+      } catch (error) {
+        console.error("Failed to fetch model count", error);
+      }
+    };
+
+    fetchModelCount();
+  }, []);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+
+    // Check file type
+    if (file && file.name.split(".").pop().toLowerCase() !== ALLOWED_FILE_TYPE) {
+      setUploadStatus("Only .fbx files are allowed.");
+      fileInputRef.current.value = "";
+      return;
+    }
+
+    // Check file size
+    if (file && file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      setUploadStatus(`File size should not exceed ${MAX_FILE_SIZE_MB}MB.`);
+      fileInputRef.current.value = "";
+      return;
+    }
+
+    setSelectedFile(file);
+    setUploadStatus("");
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (modelCount >= MAX_UPLOADS) {
+      setUploadStatus(`You can only upload a maximum of ${MAX_UPLOADS} models.`);
+      return;
+    }
+
     if (selectedFile) {
       const formData = new FormData();
       formData.append("file", selectedFile);
@@ -28,14 +70,12 @@ const UploadModels = () => {
         setUploadStatus("Upload successful");
         setUploadFinished(true);
 
+        // Update model count
+        setModelCount((prevCount) => prevCount + 1);
+
         // Clear the file input and reset state
         setSelectedFile(null);
         fileInputRef.current.value = ""; // Clear the file input
-
-        // Log the state after a delay to ensure it's updated
-        setTimeout(() => {
-          console.log("uploadFinished after update:", true);
-        }, 1000);
       } catch (error) {
         console.error("File upload error:", error);
         setUploadStatus("Upload failed");
@@ -49,10 +89,16 @@ const UploadModels = () => {
         <form onSubmit={handleSubmit}>
           <div>
             <label
+              className="block text-center mb-2 text-cl font-medium text-gray-900 dark:text-white"
+              htmlFor="file_input"
+            >
+              Upload 3D Models
+            </label>
+            <label
               className="block text-center mb-2 text-sm font-medium text-gray-900 dark:text-white"
               htmlFor="file_input"
             >
-              Upload 3D Model
+              Test-user (Active) FBX only, max 6 models, 10MB each
             </label>
 
             <input
