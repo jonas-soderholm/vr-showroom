@@ -24,17 +24,24 @@ function MovieMain() {
   };
 
   return (
-    <div className="relative bg-gray-800 text-white min-h-screen flex items-center justify-center">
+    <div className="relative text-white min-h-screen flex items-center justify-center">
       <div className="absolute inset-0">
-        <img src="./quest3.jpg" alt="VR Background" className="hero-image w-full h-full object-cover opacity-35" />
-        <div className="absolute inset-0 bg-black opacity-40"></div> {/* Darker overlay */}
+        <img
+          src="./abstract2.jpg"
+          alt="VR Background"
+          className="hero-image w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black opacity-50"></div>{" "}
+        {/* Darker overlay */}
       </div>
       <div className="relative z-10 text-center px-4 py-16">
-        <h1 className="text-4xl font-bold mb-4">Upload 3D models, download in VR.</h1>
-        <p className="text-xl">Experience your 3D models in Virtual Reality.</p>
-        <p className="text-xl mb-8">
-          Upload your models, manage your collection, and enjoy a fast and simple VR experience.
+        <h1 className="text-4xl font-bold mb-4">Upload 3D models,</h1>
+        <h1 className="text-4xl font-bold mb-4">download to Multiuser-VR.</h1>
+        <p className="text-lg mb-8">
+          Manage your collections with speed and security.
+          <br />
         </p>
+
         <button
           onClick={getStartedHandler}
           className="btn btn-blue px-6 py-3 text-lg font-medium bg-blue-600 hover:bg-blue-700 rounded-md"

@@ -7,11 +7,21 @@ from .serializers import UserSerializer, UserModelSerializer
 from .models import UserModel
 from django.db import IntegrityError
 import os
+import io
+import zipfile
+from django.http import HttpResponse
+from django.conf import settings
 
 User = get_user_model()
 
 MAX_UPLOADS = 6
 MAX_FILE_SIZE_MB = 10
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # This allows access without authentication
+def health_check(request):
+    return Response({'status': 'healthy'}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -32,20 +42,6 @@ def user_detail(request):
     return Response(serializer.data)
 
 
-
-
-
-
-
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def upload_model(request):
-#     serializer = UserModelSerializer(data=request.data, context={'request': request})
-#     if serializer.is_valid():
-#         serializer.save()
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def upload_model(request):
@@ -63,9 +59,9 @@ def upload_model(request):
     if file.size > MAX_FILE_SIZE_MB * 1024 * 1024:
         return Response({'error': f'File size should not exceed {MAX_FILE_SIZE_MB}MB.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Check file type
-    if not file.name.lower().endswith('.fbx'):
-        return Response({'error': 'Only .fbx files are allowed.'}, status=status.HTTP_400_BAD_REQUEST)
+    # # Check file type
+    # if not file.name.lower().endswith('.obj'):
+    #     return Response({'error': 'Only .obj files are allowed.'}, status=status.HTTP_400_BAD_REQUEST)
 
     serializer = UserModelSerializer(data=request.data, context={'request': request})
     if serializer.is_valid():
@@ -99,3 +95,36 @@ def delete_model(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     except UserModel.DoesNotExist:
         return Response({'error': 'Model not found or not authorized'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def download_all_models(request):
+    try:
+        user = request.user
+        user_models = UserModel.objects.filter(user=user)
+
+        if not user_models.exists():
+            return Response({'error': "No models found for the user."}, status=status.HTTP_404_NOT_FOUND)
+
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            for model in user_models:
+                file_path = os.path.join(settings.MEDIA_ROOT, model.file.name)
+                if os.path.exists(file_path):
+                    file_name = os.path.basename(file_path)
+                    with open(file_path, 'rb') as f:
+                        zip_file.writestr(file_name, f.read())
+                else:
+                    logger.error(f"File not found: {file_path}")
+
+        zip_buffer.seek(0)
+        response = HttpResponse(zip_buffer, content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename={user.username}_models.zip'
+        return response
+
+    except Exception as e:
+        logger.error(f"Error creating zip file: {str(e)}")
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -4,7 +4,7 @@ import { useSharedState } from "../SharedContext";
 
 const MAX_UPLOADS = 6;
 const MAX_FILE_SIZE_MB = 10;
-const ALLOWED_FILE_TYPE = "fbx";
+const ALLOWED_FILE_TYPE = "glb";
 
 const UploadModels = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -32,7 +32,7 @@ const UploadModels = () => {
 
     // Check file type
     if (file && file.name.split(".").pop().toLowerCase() !== ALLOWED_FILE_TYPE) {
-      setUploadStatus("Only .fbx files are allowed.");
+      setUploadStatus("Only .glb files are allowed at this time.");
       fileInputRef.current.value = "";
       return;
     }
@@ -98,7 +98,7 @@ const UploadModels = () => {
               className="block text-center mb-2 text-sm font-medium text-gray-900 dark:text-white"
               htmlFor="file_input"
             >
-              Test-user (Active) FBX only, max 6 models, 10MB each
+              Test-user (Active) .glb only, max 6 models, 10MB max each
             </label>
 
             <input
