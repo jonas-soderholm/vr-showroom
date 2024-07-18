@@ -31,7 +31,10 @@ const UploadModels = () => {
     const file = event.target.files[0];
 
     // Check file type
-    if (file && file.name.split(".").pop().toLowerCase() !== ALLOWED_FILE_TYPE) {
+    if (
+      file &&
+      file.name.split(".").pop().toLowerCase() !== ALLOWED_FILE_TYPE
+    ) {
       setUploadStatus("Only .glb files are allowed at this time.");
       fileInputRef.current.value = "";
       return;
@@ -52,7 +55,9 @@ const UploadModels = () => {
     event.preventDefault();
 
     if (modelCount >= MAX_UPLOADS) {
-      setUploadStatus(`You can only upload a maximum of ${MAX_UPLOADS} models.`);
+      setUploadStatus(
+        `You can only upload a maximum of ${MAX_UPLOADS} models.`
+      );
       return;
     }
 

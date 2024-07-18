@@ -92,7 +92,7 @@ const Login = () => {
           <div>
             <button
               type="submit"
-              className="btn btn-blue px-6 py-3 mt-2 text-lg font-medium bg-blue-600 hover:bg-blue-700 rounded-md w-full"
+              className="btn btn-blue px-6 py-3 mt-2 text-lg font-medium rounded-md w-full"
             >
               Login
             </button>

@@ -44,7 +44,7 @@ function MovieMain() {
 
         <button
           onClick={getStartedHandler}
-          className="btn btn-blue px-6 py-3 text-lg font-medium bg-blue-600 hover:bg-blue-700 rounded-md"
+          className="btn btn-blue px-6 py-3 text-lg font-medium rounded-md"
         >
           {buttonText}
         </button>
