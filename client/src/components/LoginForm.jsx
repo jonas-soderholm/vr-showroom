@@ -37,12 +37,12 @@ const Login = () => {
       <div className="py-4 text-2xl font-bold text-slate-200 mt-[8rem]">
         LOG IN
       </div>
-      <div className="rounded bg-white p-8 shadow-md w-auto">
+      <div className="rounded p-2 md:w-[20rem] w-[15rem]">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-slate-200"
             >
               Username
             </label>
@@ -52,14 +52,15 @@ const Login = () => {
               name="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
+              className="mt-1 block w-full text-slate-200 bg-[#383939] px-3 py-2 border border-gray-400 rounded-md
+               focus:outline-none focus:ring-gray-500 focus:border-gray-300 sm:text-sm"
               required
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-slate-200"
             >
               Password
             </label>
@@ -69,7 +70,8 @@ const Login = () => {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
+              className="mt-1 block w-full text-slate-200 bg-[#383939] px-3 py-2 border border-gray-400 rounded-md
+               focus:outline-none focus:ring-gray-500 focus:border-gray-300 sm:text-sm"
               required
             />
           </div>
