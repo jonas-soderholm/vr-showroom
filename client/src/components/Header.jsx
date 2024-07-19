@@ -37,7 +37,8 @@ function Header() {
   return (
     <header className={headerClass}>
       <div className="p-3 flex justify-between mx-1">
-        <div className="flex items-center">
+        <div className="flex items-center space-x-2">
+          <div className="cube-logo"></div>
           <a
             href="/"
             className="md:text-2xl text-1xl text-slate-200 font-bold italic"
@@ -45,7 +46,7 @@ function Header() {
             FastXR
           </a>
         </div>
-        <div className="flex items-center md:gap-10 gap-4 md:text-sm text-xs">
+        <div className="flex items-center md:gap-6 gap-4 md:text-sm text-xs">
           <a
             href="/"
             className="text-slate-200 flex items-center hover:underline underline-offset-4"

@@ -45,7 +45,7 @@ const FetchAllModels = () => {
           >
             <a href={model.file_url} target="_blank" rel="noopener noreferrer">
               <img
-                src="./3dmodel.png"
+                src="./cube-logo.png"
                 alt="3D Model"
                 className="w-[4rem] h-auto mx-auto"
               />

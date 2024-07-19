@@ -9,31 +9,46 @@ body {
   font-family: "Montserrat", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #1f2937;
+  background-color: rgb(38, 38, 38);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: "source-code-pro", Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-.hero-image {
-  object-position: top 10%;
+.hero-background {
+  background-image: url("/public/hero-image.png");
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+}
+
+.cube-logo {
+  background-image: url("/public/cube-logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
 }
 
 .btn {
   @apply font-bold py-2 px-4 rounded;
 }
+
 .btn-blue {
   @apply bg-blue-600 text-white;
 }
+
 .btn-blue:hover {
-  /* @apply bg-blue-500; */
   background-color: #276ff7;
 }
+
 .btn-red {
   @apply bg-red-600;
 }
+
 .btn-red:hover {
   background-color: #f42525;
 }
