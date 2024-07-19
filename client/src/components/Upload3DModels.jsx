@@ -68,7 +68,7 @@ const UploadModels = () => {
         setSelectedFile(null);
         fileInputRef.current.value = ""; // Clear the file input
       } catch (error) {
-        console.error("File upload error:", error);
+        // console.error("File upload error:", error);
         setUploadStatus("Upload failed");
       }
     }

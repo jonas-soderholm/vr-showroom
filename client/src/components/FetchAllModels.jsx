@@ -9,14 +9,13 @@ const FetchAllModels = () => {
   const fetchModels = async () => {
     try {
       const response = await axiosInstance.get("users/list-models/");
-
       if (Array.isArray(response.data)) {
         setModels(response.data);
       } else {
         setModels([]);
       }
     } catch (error) {
-      set.error("Failed to fetch models");
+      console.error("An error has occurred");
       setModels([]);
     }
   };
@@ -37,10 +36,7 @@ const FetchAllModels = () => {
       await axiosInstance.delete(`users/delete-model/${modelId}/`);
       setModels(models.filter((model) => model.id !== modelId));
     } catch (error) {
-      console.error(
-        "Failed to delete model",
-        error.response ? error.response.data : error.message
-      );
+      console.error("Failed to delete model");
     }
   };
 

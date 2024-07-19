@@ -16,7 +16,7 @@ const UserProfile = () => {
     mountedRef.current = true;
 
     if (!authTokens) {
-      console.error("You are not logged in");
+      // console.error("You are not logged in");
       navigate("/login");
       return;
     }
