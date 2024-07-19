@@ -18,11 +18,11 @@
 
 FROM python:3.10-slim
 
+# Ensure Python output is sent straight to the terminal without buffering
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
-ENV PORT=7000
 
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt

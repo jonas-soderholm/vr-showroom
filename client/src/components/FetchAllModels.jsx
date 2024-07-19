@@ -9,9 +9,15 @@ const FetchAllModels = () => {
   const fetchModels = async () => {
     try {
       const response = await axiosInstance.get("users/list-models/");
-      setModels(response.data);
+
+      if (Array.isArray(response.data)) {
+        setModels(response.data);
+      } else {
+        setModels([]);
+      }
     } catch (error) {
-      console.error("Failed to fetch models", error);
+      set.error("Failed to fetch models");
+      setModels([]);
     }
   };
 
@@ -31,13 +37,16 @@ const FetchAllModels = () => {
       await axiosInstance.delete(`users/delete-model/${modelId}/`);
       setModels(models.filter((model) => model.id !== modelId));
     } catch (error) {
-      console.error("Failed to delete model", error);
+      console.error(
+        "Failed to delete model",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
   return (
     <div className="3D-card-container flex flex-wrap justify-center py-4 gap-10">
-      {models.length > 0 ? (
+      {Array.isArray(models) && models.length > 0 ? (
         models.map((model) => (
           <div
             key={model.id}
