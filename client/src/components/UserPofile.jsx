@@ -15,7 +15,6 @@ const UserProfile = () => {
   useEffect(() => {
     mountedRef.current = true;
 
-    console.log("useEffect triggered");
     if (!authTokens) {
       console.error("You are not logged in");
       navigate("/login");
@@ -24,15 +23,12 @@ const UserProfile = () => {
 
     const fetchUser = async () => {
       try {
-        console.log("Fetching user data");
         const response = await axiosInstance.get("users/me/");
         if (mountedRef.current) {
           setUser(response.data);
-          console.log("User data fetched", response.data);
         }
       } catch (error) {
         navigate("/login");
-        console.error("Error fetching user data", error);
       }
     };
 
@@ -42,8 +38,6 @@ const UserProfile = () => {
       mountedRef.current = false;
     };
   }, [navigate, authTokens]);
-
-  console.log("Rendering UserProfile", { models, user });
 
   if (!authTokens) return <p>Loading...</p>;
   if (!user) return <p>Loading user data...</p>;

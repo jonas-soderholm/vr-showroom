@@ -26,7 +26,7 @@ root.render(
                 <Route path="/" element={<Main />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<UserProfile />} />
-                <Route path="/signup" element={<SignUp />} />
+                {/* <Route path="/signup" element={<SignUp />} /> */}
               </Routes>
             </div>
             <Footer />
@@ -38,4 +38,4 @@ root.render(
 );
 
 // Optional: Log performance metrics
-reportWebVitals(console.log);
+reportWebVitals();

@@ -24,12 +24,9 @@ function Header() {
     } else {
       setTokens(null);
     }
-
-    console.log("Header component mounted", { tokens });
   }, [authTokens]);
 
   const logoutHandler = () => {
-    console.log("Logging out");
     logoutUser();
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
