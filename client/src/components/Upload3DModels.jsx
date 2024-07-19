@@ -4,7 +4,7 @@ import { useSharedState } from "../SharedContext";
 
 const MAX_UPLOADS = 6;
 const MAX_FILE_SIZE_MB = 10;
-const ALLOWED_FILE_TYPE = "fbx";
+const ALLOWED_FILE_TYPE = "glb";
 
 const UploadModels = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -13,26 +13,15 @@ const UploadModels = () => {
   const fileInputRef = useRef(null);
   const [modelCount, setModelCount] = useState(0); // Track the number of uploaded models
 
-  // Fetch current user's model count
-  useEffect(() => {
-    const fetchModelCount = async () => {
-      try {
-        const response = await axiosInstance.get("users/list-models/");
-        setModelCount(response.data.length);
-      } catch (error) {
-        console.error("Failed to fetch model count", error);
-      }
-    };
-
-    fetchModelCount();
-  }, []);
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
     // Check file type
-    if (file && file.name.split(".").pop().toLowerCase() !== ALLOWED_FILE_TYPE) {
-      setUploadStatus("Only .fbx files are allowed.");
+    if (
+      file &&
+      file.name.split(".").pop().toLowerCase() !== ALLOWED_FILE_TYPE
+    ) {
+      setUploadStatus("Only .glb files are allowed at this time.");
       fileInputRef.current.value = "";
       return;
     }
@@ -52,7 +41,9 @@ const UploadModels = () => {
     event.preventDefault();
 
     if (modelCount >= MAX_UPLOADS) {
-      setUploadStatus(`You can only upload a maximum of ${MAX_UPLOADS} models.`);
+      setUploadStatus(
+        `You can only upload a maximum of ${MAX_UPLOADS} models.`
+      );
       return;
     }
 
@@ -77,7 +68,7 @@ const UploadModels = () => {
         setSelectedFile(null);
         fileInputRef.current.value = ""; // Clear the file input
       } catch (error) {
-        console.error("File upload error:", error);
+        // console.error("File upload error:", error);
         setUploadStatus("Upload failed");
       }
     }
@@ -98,7 +89,7 @@ const UploadModels = () => {
               className="block text-center mb-2 text-sm font-medium text-gray-900 dark:text-white"
               htmlFor="file_input"
             >
-              Test-user (Active) FBX only, max 6 models, 10MB each
+              Test-user (Active) .glb only, max 6 models, 10MB max each
             </label>
 
             <input

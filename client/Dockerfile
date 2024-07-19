@@ -1,14 +1,17 @@
-# Use an official Node runtime as a parent image
-FROM node:14
+FROM node:14-alpine
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --production
 
 COPY . .
 
-EXPOSE 1500
+RUN npm run build
 
-CMD ["npm", "start"]
+RUN npm install -g serve
+
+CMD ["sh", "-c", "serve -s build -l ${PORT:-3000}"]
+
+EXPOSE 3000

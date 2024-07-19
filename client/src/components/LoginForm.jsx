@@ -11,31 +11,39 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/token/`, {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/token/`,
+        {
+          username,
+          password,
+        }
+      );
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
-
       navigate("/profile");
       window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 401) {
         setError("Incorrect username or password.");
       } else {
-        console.error("There was an error logging in!", error.message);
+        // setError("There was an error logging in!", error.message);
+        setError("Incorrect username or password.");
       }
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-[4rem] mx-2">
-      <div className="py-4 text-2xl font-bold text-slate-200">LOG IN</div>
-      <div className="rounded bg-white p-8 shadow-md w-auto">
+    <div className="flex flex-col items-center min-h-screen dark:bg-neutral-800">
+      <div className="py-4 text-2xl font-bold text-slate-200 mt-[8rem]">
+        LOG IN
+      </div>
+      <div className="rounded p-2 md:w-[20rem] w-[15rem]">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-slate-200"
+            >
               Username
             </label>
             <input
@@ -44,12 +52,16 @@ const Login = () => {
               name="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full text-slate-200 bg-[#383939] px-3 py-2 border border-gray-400 rounded-md
+               focus:outline-none focus:ring-gray-500 focus:border-gray-300 sm:text-sm"
               required
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-slate-200"
+            >
               Password
             </label>
             <input
@@ -58,7 +70,8 @@ const Login = () => {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full text-slate-200 bg-[#383939] px-3 py-2 border border-gray-400 rounded-md
+               focus:outline-none focus:ring-gray-500 focus:border-gray-300 sm:text-sm"
               required
             />
           </div>
@@ -71,11 +84,15 @@ const Login = () => {
             </span>
           </div> */}
 
-          {error && <div className=" text-[0.8rem] text-red-500 text-center my-4">{error}</div>}
+          {error && (
+            <div className=" text-[0.8rem] text-red-500 text-center my-4">
+              {error}
+            </div>
+          )}
           <div>
             <button
               type="submit"
-              className="w-full py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="btn btn-blue px-6 py-3 mt-2 text-lg font-medium rounded-md w-full"
             >
               Login
             </button>
