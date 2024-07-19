@@ -20,14 +20,14 @@ const Login = () => {
       );
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
-
       navigate("/profile");
       window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 401) {
         setError("Incorrect username or password.");
       } else {
-        console.error("There was an error logging in!", error.message);
+        // setError("There was an error logging in!", error.message);
+        setError("Incorrect username or password.");
       }
     }
   };

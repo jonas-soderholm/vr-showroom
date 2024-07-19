@@ -1,10 +1,12 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer, UserModelSerializer
 from .models import UserModel
+from rest_framework.permissions import IsAdminUser
 from django.db import IntegrityError
 import os
 import io
@@ -18,6 +20,13 @@ MAX_UPLOADS = 6
 MAX_FILE_SIZE_MB = 10
 
 
+class CustomUserRateThrottle(UserRateThrottle):
+    rate = '100/hour'  # Custom rate limit for authenticated users
+
+class CustomAnonRateThrottle(AnonRateThrottle):
+    rate = '0/hour'  # Custom rate limit for unauthenticated users
+
+
 @api_view(['GET'])
 @permission_classes([AllowAny])  # This allows access without authentication
 def health_check(request):
@@ -25,7 +34,7 @@ def health_check(request):
 
 
 @api_view(['POST'])
-@permission_classes([AllowAny])
+@permission_classes([IsAdminUser])
 def create_user(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
@@ -44,6 +53,7 @@ def user_detail(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@throttle_classes([CustomUserRateThrottle, CustomAnonRateThrottle])
 def upload_model(request):
     user = request.user
 
@@ -59,9 +69,9 @@ def upload_model(request):
     if file.size > MAX_FILE_SIZE_MB * 1024 * 1024:
         return Response({'error': f'File size should not exceed {MAX_FILE_SIZE_MB}MB.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    # # Check file type
-    # if not file.name.lower().endswith('.obj'):
-    #     return Response({'error': 'Only .obj files are allowed.'}, status=status.HTTP_400_BAD_REQUEST)
+    # Check file type
+    if not file.name.lower().endswith('.glb'):
+        return Response({'error': 'Only .glb files are allowed.'}, status=status.HTTP_400_BAD_REQUEST)
 
     serializer = UserModelSerializer(data=request.data, context={'request': request})
     if serializer.is_valid():
@@ -101,6 +111,7 @@ def delete_model(request, pk):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@throttle_classes([CustomUserRateThrottle, CustomAnonRateThrottle])
 def download_all_models(request):
     try:
         user = request.user

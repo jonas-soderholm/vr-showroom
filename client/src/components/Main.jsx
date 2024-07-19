@@ -32,7 +32,6 @@ function MovieMain() {
           className="hero-image w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black opacity-50"></div>{" "}
-        {/* Darker overlay */}
       </div>
       <div className="relative z-10 text-center px-4 py-16">
         <h1 className="text-4xl font-bold mb-4">Upload 3D models,</h1>
