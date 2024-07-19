@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../utils/AuthContext";
@@ -9,48 +9,44 @@ const UserProfile = () => {
   const [models, setModels] = useState([]);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  const { authTokens } = useContext(AuthContext); // Accessing the auth tokens from context
+  const { authTokens } = useContext(AuthContext);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
+    mountedRef.current = true;
+
+    console.log("useEffect triggered");
     if (!authTokens) {
       console.error("You are not logged in");
       navigate("/login");
-      return; // Exit useEffect early if not authenticated
+      return;
     }
 
     const fetchUser = async () => {
       try {
-        const response = await axiosInstance.get("users/me/", {
-          headers: {
-            Authorization: `Bearer ${authTokens.access}`,
-          },
-        });
-        setUser(response.data);
+        console.log("Fetching user data");
+        const response = await axiosInstance.get("users/me/");
+        if (mountedRef.current) {
+          setUser(response.data);
+          console.log("User data fetched", response.data);
+        }
       } catch (error) {
         navigate("/login");
-        console.error("You need to login", error);
-      }
-    };
-
-    const fetchModels = async () => {
-      try {
-        const response = await axiosInstance.get("users/list-models/", {
-          headers: {
-            Authorization: `Bearer ${authTokens.access}`,
-          },
-        });
-        setModels(response.data);
-      } catch (error) {
-        console.error("Failed to fetch models", error);
+        console.error("Error fetching user data", error);
       }
     };
 
     fetchUser();
-    fetchModels(); // Fetch models only if authenticated
+
+    return () => {
+      mountedRef.current = false;
+    };
   }, [navigate, authTokens]);
 
-  // Early return to handle unauthenticated cases
-  if (!authTokens || !user) return null;
+  console.log("Rendering UserProfile", { models, user });
+
+  if (!authTokens) return <p>Loading...</p>;
+  if (!user) return <p>Loading user data...</p>;
 
   return (
     <div className="flex flex-col min-h-screen dark:bg-neutral-800">
@@ -65,7 +61,7 @@ const UserProfile = () => {
         </div>
 
         <Upload3DModels />
-        <div className="text-2xl text-center py-8">Your 3D-Models</div>
+        <div className="text-2xl text-center py-8">Your 3D Models</div>
         <FetchAllModels models={models} />
       </div>
     </div>

@@ -22,7 +22,7 @@ const FetchAllModels = () => {
   useEffect(() => {
     if (uploadFinished) {
       fetchModels();
-      setUploadFinished(false); // Reset the uploadFinished state after fetching models
+      setUploadFinished(false);
     }
   }, [uploadFinished, setUploadFinished]);
 
@@ -37,31 +37,44 @@ const FetchAllModels = () => {
 
   return (
     <div className="3D-card-container flex flex-wrap justify-center py-4 gap-10">
-      {models.map((model) => (
-        <div key={model.id} className="max-w-[10rem] w-[10rem] border rounded-lg p-4 flex flex-col mb-4">
-          <a href={model.file_url} target="_blank" rel="noopener noreferrer">
-            <img src="./3dmodel.png" alt="3D Model" className="w-[4rem] h-auto mx-auto" />
-          </a>
-          <div className="mt-2 text-sm flex-grow mx-auto mb-3">
-            {model.name.length > 15 ? (
-              <span className="break-words">
-                {model.name.slice(0, 15)}<br />
-                {model.name.slice(15, 30)}
-                {model.name.length > 30 ? '...' : ''}
-              </span>
-            ) : (
-              model.name
-            )}
+      {models.length > 0 ? (
+        models.map((model) => (
+          <div
+            key={model.id}
+            className="max-w-[10rem] w-[10rem] border rounded-lg p-4 flex flex-col mb-4"
+          >
+            <a href={model.file_url} target="_blank" rel="noopener noreferrer">
+              <img
+                src="./3dmodel.png"
+                alt="3D Model"
+                className="w-[4rem] h-auto mx-auto"
+              />
+            </a>
+            <div className="mt-2 text-sm flex-grow mx-auto mb-3">
+              {model.name.length > 15 ? (
+                <span className="break-words">
+                  {model.name.slice(0, 15)}
+                  <br />
+                  {model.name.slice(15, 30)}
+                  {model.name.length > 30 ? "..." : ""}
+                </span>
+              ) : (
+                model.name
+              )}
+            </div>
+            <button
+              className="btn btn-red mt-2 text-xs"
+              onClick={() => handleDelete(model.id)}
+            >
+              Delete
+            </button>
           </div>
-          <button className="btn btn-red mt-2 text-xs" onClick={() => handleDelete(model.id)}>
-            Delete
-          </button>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p>No models available.</p>
+      )}
     </div>
   );
-  
-
 };
 
 export default FetchAllModels;

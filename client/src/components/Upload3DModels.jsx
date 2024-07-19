@@ -13,20 +13,6 @@ const UploadModels = () => {
   const fileInputRef = useRef(null);
   const [modelCount, setModelCount] = useState(0); // Track the number of uploaded models
 
-  // Fetch current user's model count
-  useEffect(() => {
-    const fetchModelCount = async () => {
-      try {
-        const response = await axiosInstance.get("users/list-models/");
-        setModelCount(response.data.length);
-      } catch (error) {
-        console.error("Failed to fetch model count", error);
-      }
-    };
-
-    fetchModelCount();
-  }, []);
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 

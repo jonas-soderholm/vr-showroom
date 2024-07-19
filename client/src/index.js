@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client"; // Updated import
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -11,7 +11,6 @@ import SignUp from "./components/SignUp";
 import { SharedStateProvider } from "./SharedContext.js";
 import { AuthProvider } from "./utils/AuthContext.js";
 import UserProfile from "./components/UserPofile.jsx";
-import MovieDetails from "./components/MovieDetails";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -27,8 +26,7 @@ root.render(
                 <Route path="/" element={<Main />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<UserProfile />} />
-                {/* <Route path="/signup" element={<SignUp />} /> */}
-                <Route path="/movies/:movieId" element={<MovieDetails />} />
+                <Route path="/signup" element={<SignUp />} />
               </Routes>
             </div>
             <Footer />
@@ -38,3 +36,6 @@ root.render(
     </AuthProvider>
   </React.StrictMode>
 );
+
+// Optional: Log performance metrics
+reportWebVitals(console.log);

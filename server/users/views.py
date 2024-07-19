@@ -24,7 +24,7 @@ class CustomUserRateThrottle(UserRateThrottle):
     rate = '100/hour'  # Custom rate limit for authenticated users
 
 class CustomAnonRateThrottle(AnonRateThrottle):
-    rate = '0/hour'  # Custom rate limit for unauthenticated users
+    rate = '100/hour'  # Custom rate limit for unauthenticated users
 
 
 @api_view(['GET'])

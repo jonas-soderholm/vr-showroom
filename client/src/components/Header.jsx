@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../utils/AuthContext";
 import { FaUserCircle } from "react-icons/fa";
@@ -24,9 +24,12 @@ function Header() {
     } else {
       setTokens(null);
     }
+
+    console.log("Header component mounted", { tokens });
   }, [authTokens]);
 
   const logoutHandler = () => {
+    console.log("Logging out");
     logoutUser();
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
@@ -60,20 +63,14 @@ function Header() {
             <span>Profile</span>
           </a>
           {tokens ? (
-            <>
-              <a
-                onClick={logoutHandler}
-                className="text-slate-200 cursor-pointer hover:underline underline-offset-4"
-              >
-                Logout
-              </a>
-            </>
+            <a
+              onClick={logoutHandler}
+              className="text-slate-200 cursor-pointer hover:underline underline-offset-4"
+            >
+              Logout
+            </a>
           ) : (
-            <>
-              {/* <a href="/login" className="md:text-1xl text-1xl text-slate-200">
-                Login
-              </a> */}
-            </>
+            <></>
           )}
         </div>
       </div>
