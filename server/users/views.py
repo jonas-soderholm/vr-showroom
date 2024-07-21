@@ -35,12 +35,20 @@ def health_check(request):
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
+# @permission_classes([AllowAny])
 def create_user(request):
-    serializer = UserSerializer(data=request.data)
+    data = request.data.copy()
+
+    # Convert the username to lowercase if it exists in the data
+    if 'username' in data:
+        data['username'] = data['username'].lower()
+
+    serializer = UserSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET'])
