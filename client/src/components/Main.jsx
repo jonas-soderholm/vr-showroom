@@ -30,7 +30,7 @@ function Main() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center text-slate-200">
+    <div className="relative min-h-screen flex items-center justify-center text-slate-200 mt-[-3rem]">
       <div className="absolute inset-0 hero-background">
         <div className="absolute inset-0 bg-black opacity-60"></div>
       </div>
@@ -44,13 +44,13 @@ function Main() {
         <div className="flex gap-4 justify-center">
           <button
             onClick={getStartedHandler}
-            className="btn btn-blue px-6 py-3 text-lg font-medium rounded-md"
+            className="btn btn-blue px-6 py-3 md:text-sm text-xs rounded-md"
           >
             {buttonText}
           </button>
           <button
             onClick={playVideoHandler}
-            className="btn px-6 py-3 text-lg font-medium rounded-md border border-white flex items-center"
+            className="btn px-6 py-3 md:text-sm text-xs rounded-md border border-white flex items-center"
           >
             <FaPlay className="mr-2" />
             Watch Video
