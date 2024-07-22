@@ -96,6 +96,12 @@ const Login = () => {
             >
               Login
             </button>
+            <div className="text-center text-[12px] text-slate-400 my-4">
+              <p>
+                To request a test account and download the multiuser VR APK,
+                please contact: jonas.soderholm89@gmail.com
+              </p>
+            </div>
           </div>
         </form>
       </div>
