@@ -20,11 +20,14 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/signup/`, {
-        username,
-        password,
-        email,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/users/signup/`,
+        {
+          username,
+          password,
+          email,
+        }
+      );
       navigate("/login");
     } catch (error) {
       if (error.response) {
@@ -33,7 +36,10 @@ const SignUp = () => {
         const data = error.response.data;
         if (data.email && data.email[0].includes("already in use")) {
           setError("Email is already in use.");
-        } else if (data.username && data.username[0].includes("already exists")) {
+        } else if (
+          data.username &&
+          data.username[0].includes("already exists")
+        ) {
           setError("Username already exists.");
         } else if (data.email && data.email[0].includes("incorrect format")) {
           setError("Your email is in an incorrect format.");
@@ -55,7 +61,10 @@ const SignUp = () => {
       <div className="rounded bg-white p-8 shadow-md w-96">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700"
+            >
               Username
             </label>
             <input
@@ -69,7 +78,10 @@ const SignUp = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -83,7 +95,10 @@ const SignUp = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input

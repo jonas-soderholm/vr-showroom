@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'users',
     'corsheaders',
+    'whitenoise.runserver_nostatic',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -27,12 +28,14 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'  
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-                          
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 SECRET_KEY = os.environ.get('SECRET_KEY', 'your_default_secret_key')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = False
 
 # ALLOWED_HOSTS = ['*']
 # CORS_ALLOW_ALL_ORIGINS = True
@@ -41,6 +44,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

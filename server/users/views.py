@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer, UserModelSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import UserModel
 from rest_framework.permissions import IsAdminUser
 from django.db import IntegrityError
@@ -28,19 +30,43 @@ class CustomAnonRateThrottle(AnonRateThrottle):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])  # This allows access without authentication
+@permission_classes([AllowAny])
 def health_check(request):
     return Response({'status': 'healthy'}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
+# @permission_classes([AllowAny])
 def create_user(request):
-    serializer = UserSerializer(data=request.data)
+    data = request.data.copy()
+
+    # Convert the username to lowercase if it exists in the data
+    if 'username' in data:
+        data['username'] = data['username'].lower()
+
+    serializer = UserSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        # Convert the username to lowercase
+        attrs['username'] = attrs.get('username', '').lower()
+        return super().validate(attrs)
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+
+
+
 
 
 @api_view(['GET'])
